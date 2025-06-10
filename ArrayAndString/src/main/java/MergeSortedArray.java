@@ -5,7 +5,7 @@ public class MergeSortedArray {
 	public static void main(String[] args) {
 		// Brute force is add n elements of nums2 in nums1 after m element and sort the array.
 		// stuck there how to move elements so make space and move elements and replace 0.
-		// we don't need to traverse from start, need to traverse both array from behind and pointer which fill values.
+		// we don't need to traverse from start, need to traverse both array from end and maintain a pointer which fill values.
 
 		// {1,2,3,0,0,0}
 		//      i     p
@@ -33,7 +33,7 @@ public class MergeSortedArray {
 			if(i >= 0 && nums1[i] > nums2[j]) {
 				nums1[p--] = nums1[i--];
 			} else {
-				nums2[p--] = nums2[j--];
+				nums1[p--] = nums2[j--];
 			}
 		}
 
