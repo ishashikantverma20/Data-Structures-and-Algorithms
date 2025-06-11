@@ -5,7 +5,7 @@ public class RemoveElements {
 		// i
 		//   j
 
-	   // if j pointer value not matched with val, then put j pointer value to i pointer and increase i pointer
+	   // if j pointer value not matched with val, then assign j pointer value to i pointer and increase i pointer
 	  // j pointer will always move
 
 		int j = 0;
