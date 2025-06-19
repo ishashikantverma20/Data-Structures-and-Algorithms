@@ -22,7 +22,8 @@ public class RotateArray {
 
 		int len = nums.length;
 
-		if(k > len) {  // if k iteration is greater than len, then fit it to 0 and len
+		if (k > len) {  // if k iteration is greater than len, then fit it to 0 and len
+		    k = k % len;
 		}
 
 		reverse(nums, 0,  len -1);

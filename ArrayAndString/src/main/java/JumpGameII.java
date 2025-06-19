@@ -17,15 +17,15 @@ public class JumpGameII {
 	public int jump(int[] nums) {
 		int jumps = 0;
 		int currentEnd = 0;
-		int farthest = 0;
+		int maximumReach = 0;
 
 		for (int i = 0; i < nums.length - 1; i++) {
 			// i + nums[i] - as will lead to next index in array
-			farthest = Math.max(farthest, i + nums[i]);
+			maximumReach = Math.max(maximumReach, i + nums[i]);
 
 			if (i == currentEnd) {
 				jumps++;
-				currentEnd = farthest;
+				currentEnd = maximumReach;
 			}
 		}
 		return jumps;
