@@ -10,9 +10,9 @@
  * Output: [1,2,3]
  *
  *       1
- *    |    |
+ *     /  \
  *    N    2
- *       |  |
+ *       /  \
  *      3   N
  * **/
 public class PreorderTraversal {
