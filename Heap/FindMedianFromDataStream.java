@@ -58,7 +58,7 @@ public class FindMedianFromDataStream {
 		if (leftMaxHeap.size() == rightMinHeap.size()) {
 			return (leftMaxHeap.peek() + rightMinHeap.peek()) / 2.0;
 		}
-		
+
 		// return left heap element when left heap size is greater than right heap size
 		return leftMaxHeap.peek();
 	}
