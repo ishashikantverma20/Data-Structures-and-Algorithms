@@ -6,7 +6,7 @@ import java.util.*;
  *  5 -> 0 <-  4
  *  |          |
  *  V          V
- *  2 -> 3 <-  1
+ *  2 -> 3 ->  1
  *
  *
  * U -> V  // U always comes before V, in topological sort
