@@ -11,65 +11,73 @@
  *
  *
  * ***/
-class DSU {
-		int[] Parent, Size;
-		int comps;
+class UnionFind {
+	private int[] parent;
+	private int[] rank;
 
-		public DSU(int n) {
-			comps = n;
-			Parent = new int[n + 1];
-			Size = new int[n + 1];
-			for (int i = 0; i <= n; i++) {
-				Parent[i] = i;
-				Size[i] = 1;
-			}
+	public UnionFind(int n) {
+		parent = new int[n];
+		rank = new int[n];
+		for (int i = 0; i < n; i++) {
+			parent[i] = i;
+			rank[i] = 0;
+		}
+	}
+
+	public int find(int x) {
+		if (parent[x] != x) {
+			parent[x] = find(parent[x]);  // path compression
+		}
+		return parent[x];
+	}
+
+	public boolean union(int x, int y) {
+		int rootX = find(x);
+		int rootY = find(y);
+
+		if (rootX == rootY) {
+			return false;  // cycle detected
 		}
 
-		public int find(int node) {
-			if (Parent[node] != node) {
-				Parent[node] = find(Parent[node]);
-			}
-			return Parent[node];
+		// union by rank
+		if (rank[rootX] > rank[rootY]) {
+			parent[rootY] = rootX;
+		} else if (rank[rootX] < rank[rootY]) {
+			parent[rootX] = rootY;
+		} else {
+			parent[rootY] = rootX;
+			rank[rootX]++;
 		}
-
-		public boolean union(int u, int v) {
-			int pu = find(u), pv = find(v);
-			if (pu == pv) return false;
-			if (Size[pu] < Size[pv]) {
-				int temp = pu;
-				pu = pv;
-				pv = temp;
-			}
-			comps--;
-			Size[pu] += Size[pv];
-			Parent[pv] = pu;
-			return true;
-		}
-
-		public int components() {
-			return comps;
-		}
+		return true;
+	}
 }
-
 
 public class GraphValidTree {
 	public boolean validTree(int n, int[][] edges) {
-		// A valid tree must have exactly n-1 edges
-		if (edges.length > n - 1) {
-			return false;
+		if (edges.length != n - 1) {
+			return false;  // tree must have exactly n-1 edges
 		}
 
-		DSU dsu = new DSU(n);
+		UnionFind uf = new UnionFind(n);
+
 		for (int[] edge : edges) {
-			if (!dsu.union(edge[0], edge[1])) {
-				return false;
+			if (!uf.union(edge[0], edge[1])) {
+				return false;  // cycle detected
 			}
 		}
 
-		// beacuse in end there is only 1 component should be left, so return true
-		return dsu.components() == 1;
+		return true;
+	}
+
+	// Example usage
+	public static void main(String[] args) {
+		Solution sol = new Solution();
+		int n = 5;
+		int[][] edges = {{0,1}, {0,2}, {0,3}, {1,4}};
+		System.out.println(sol.validTree(n, edges));  // Output: true
 	}
 }
+
 
 //------------------------------------------------------------------
 
