@@ -25,6 +25,25 @@ public class NumberofProvinces {
 	 *  Each city is a node
 	 *  Using union find to grouped connected cities
 	 *  count the number of unique sets (provinces)
+	 *
+	 *  isConnected matrix is symmetric as
+	 *
+	 *   isConnected[i][j] == isConnected[j][i]
+	 *
+	 *   This usually represent an undirected graph
+	 *
+	 *   that's why j = i + 1, to cover upper triangle only and avoid duplicate checking
+	 *
+	 *   for (int i = 0; i < n; i++) {
+	 * 				for (int j = 0; j < n; j++) {
+	 * 					if (isConnected[i][j] == 1 && i != j) {
+	 * 						uf.union(i, j);
+	 *                  }
+	 *               }
+	 * 		 }
+	 *
+	 * 		 then there will be dupplicate processing but it will handle by union find when there paraent will be same.
+	 *
 	 * */
 	class Solution {
 		public int findCircleNum(int[][] isConnected) {
@@ -34,6 +53,7 @@ public class NumberofProvinces {
 			for (int i = 0; i < n; i++) {
 				for (int j = i + 1; j < n; j++) {
 					if (isConnected[i][j] == 1) {
+						// we are union indices not value
 						uf.union(i, j);
 					}
 				}
@@ -46,6 +66,9 @@ public class NumberofProvinces {
 			int[] parent;
 			int[] size;
 			int count;
+
+			// parent  = [0,1,2]
+			// size    = [1,1,1]
 
 			public UnionFind(int n) {
 				parent = new int[n];
@@ -71,6 +94,7 @@ public class NumberofProvinces {
 				if (rootX == rootY) return;
 
 				// Union by size
+				// jo parent bana hai uska size increse hoga
 				if (size[rootX] < size[rootY]) {
 					parent[rootX] = rootY;
 					size[rootY] += size[rootX];
@@ -120,6 +144,51 @@ public class NumberofProvinces {
 			}
 		}
 	}
+
+	// DFS - using adjacency list ------------------------------------------
+	class Solution {
+		public int findCircleNum(int[][] isConnected) {
+			int n = isConnected.length;
+			boolean[] visited = new boolean[n];
+			int count = 0;
+
+			Map<Integer, List<Integer>> graph = new HashMap<>();
+
+			for (int i = 0; i < n; i++) {
+				graph.put(i, new ArrayList<>());
+			}
+
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					// check this condition
+					if (isConnected[i][j] == 1) {
+						graph.get(i).add(j);
+						graph.get(j).add(i);
+					}
+				}
+			}
+
+			for (int i = 0; i < n; i++) {
+				if (!visited[i]) {
+					dfs(graph, visited, i);
+					count++;
+				}
+			}
+
+			return count;
+		}
+
+		private void dfs(Map<Integer, List<Integer>> graph, boolean[] visited, int i) {
+			visited[i] = true;
+
+			for (int num : graph.get(i)) {
+				if (!visited[num]) {
+					dfs(graph, visited, num);
+				}
+			}
+		}
+	}
+
 
 
 }
