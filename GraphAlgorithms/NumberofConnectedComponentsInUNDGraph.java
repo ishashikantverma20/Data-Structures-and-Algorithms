@@ -21,57 +21,66 @@
 public class NumberofConnectedComponentsInUNDGraph {
 
 	// Union Find
-	class DSU {
+	class SolutionI {
+		public int countComponents(int n, int[][] edges) {
+			UnionFind uf = new UnionFind(n);
+
+			for (int[] edge : edges) {
+				uf.union(edge[0], edge[1]);
+			}
+
+			return uf.getCount();
+		}
+	}
+
+	class UnionFind {
 		int[] parent;
 		int[] rank;
+		int count;
 
-		public DSU(int n) {
+		public UnionFind(int n) {
 			parent = new int[n];
 			rank = new int[n];
+			// n = number of components in starting
+			count = n;
+
 			for (int i = 0; i < n; i++) {
-				parent[i] = i;
-				rank[i] = 1;
+				parent[i] = i;  // each node is its own parent
+				rank[i] = 1;    // initial rank
 			}
 		}
 
-		public int find(int node) {
-			int cur = node;
-			while (cur != parent[cur]) {
-				parent[cur] = parent[parent[cur]];
-				cur = parent[cur];
+		public int find(int x) {
+			if (parent[x] != x) {
+				parent[x] = find(parent[x]);  // path compression
 			}
-			return cur;
+			return parent[x];
 		}
 
-		public boolean union(int u, int v) {
-			int pu = find(u);
-			int pv = find(v);
-			if (pu == pv) {
-				return false;
+		public void union(int x, int y) {
+			int rootX = find(x);
+			int rootY = find(y);
+
+			if (rootX == rootY) return;  // already connected
+
+			// Union by rank
+			if (rank[rootX] < rank[rootY]) {
+				parent[rootX] = rootY;
+			} else if (rank[rootX] > rank[rootY]) {
+				parent[rootY] = rootX;
+			} else {
+				parent[rootY] = rootX;
+				rank[rootX]++;
 			}
-			if (rank[pv] > rank[pu]) {
-				int temp = pu;
-				pu = pv;
-				pv = temp;
-			}
-			parent[pv] = pu;
-			rank[pu] += rank[pv];
-			return true;
+
+			count--;  // one less component
+		}
+
+		public int getCount() {
+			return count;
 		}
 	}
 
-	 class SolutionI {
-		public int countComponents(int n, int[][] edges) {
-			DSU dsu = new DSU(n);
-			int res = n;
-			for (int[] edge : edges) {
-				if (dsu.union(edge[0], edge[1])) {
-					res--;
-				}
-			}
-			return res;
-		}
-	}
 
 
 
