@@ -35,18 +35,18 @@ public class NumberofConnectedComponentsInUNDGraph {
 
 	class UnionFind {
 		int[] parent;
-		int[] rank;
+		int[] size;
 		int count;
 
 		public UnionFind(int n) {
 			parent = new int[n];
-			rank = new int[n];
+			size = new int[n];
 			// n = number of components in starting
 			count = n;
 
 			for (int i = 0; i < n; i++) {
 				parent[i] = i;  // each node is its own parent
-				rank[i] = 1;    // initial rank
+				size[i] = 1;    // initial rank
 			}
 		}
 
@@ -61,19 +61,18 @@ public class NumberofConnectedComponentsInUNDGraph {
 			int rootX = find(x);
 			int rootY = find(y);
 
-			if (rootX == rootY) return;  // already connected
+			if (rootX == rootY) return;  // already in the same component
 
-			// Union by rank
-			if (rank[rootX] < rank[rootY]) {
+			// Union by size
+			if (size[rootX] < size[rootY]) {
 				parent[rootX] = rootY;
-			} else if (rank[rootX] > rank[rootY]) {
-				parent[rootY] = rootX;
+				size[rootY] += size[rootX];
 			} else {
 				parent[rootY] = rootX;
-				rank[rootX]++;
+				size[rootX] += size[rootY];
 			}
 
-			count--;  // one less component
+			count--;  // Decrease component count after a union
 		}
 
 		public int getCount() {
