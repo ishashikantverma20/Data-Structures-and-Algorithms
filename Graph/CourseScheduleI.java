@@ -14,6 +14,14 @@
   [1, 0]    0 --> 1
    u  v
 
+ 1. create an adjacency list of mapping from preq -> to depedent coures
+ 2. Populate in-degree array
+ 3. Create a queue and populate it with all nodes whose in-degree 0
+ 4. while queue not empty
+     a. fetch node from queue
+     b. and for all node neighbour decrease in-degree by 1
+     c. if node in-degree 0, then add in queue
+ 5. Result:- count each time when nodes poped from queue
  */
 
 public class CourseScheduleI {
@@ -31,6 +39,7 @@ public class CourseScheduleI {
 				int course = pair[0];
 				int preq = pair[1];
 
+				// this is direcred graph
 				adj.get(preq).add(course);
 			}
 
@@ -43,7 +52,7 @@ public class CourseScheduleI {
 				}
 			}
 
-			// queue for nodes with in-degree
+			// queue for nodes with 0 in-degree
 
 			Queue<Integer> queue = new LinkedList();
 

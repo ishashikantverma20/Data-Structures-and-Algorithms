@@ -33,6 +33,10 @@ public Node(int _val, ArrayList<Node> _neighbors) {
  Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
                       1     2    3     4
  Output: [[2,4],[1,3],[2,4],[1,3]]
+
+ 1. check Map if contains cloned node then return
+ 2. if Map not contains node, then create new clone node and add to Map
+ 3. Before returning that new created clone node, clone its neighbours from original node
  */
 public class CloneGraph {
 

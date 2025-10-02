@@ -9,6 +9,10 @@
  * Output:
  * true
  *
+ * Valid Tree:
+ *  a. No cycle
+ *  b. No diconnected nodes
+ *  c. TO connect N nodes, there should be alteast N-1 connection present
  *
  * ***/
 class UnionFind {
